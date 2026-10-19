@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<title>Smart Analysis app icon</title>
+<rect width="1024" height="1024" rx="229.07" fill="#D4AF37"/>
+<g class="symbol" transform="translate(282.695 194.560) scale(3.08569) translate(-39.875 -20.250)">
+<path id="brain-contour" d="M106.21 36.77 A22.05 22.05 0 0 1 141.79 36.77 A23.42 23.42 0 0 1 171.13 60.56 A21.83 21.83 0 0 1 172.86 95.73 A23.68 23.68 0 0 1 145.15 122.02" fill="none" stroke="#0B0B0B" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="letter-s" d="M122.26 46.38 A42 42 0 1 0 100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#0B0B0B" stroke-width="36"/>
+<path id="circuit-traces" d="M100.00 82.00 H150.00" fill="none" stroke="#0B0B0B" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="100.0" cy="82.0" r="10" fill="#0B0B0B"/>
+<circle cx="150.0" cy="82.0" r="9" fill="#0B0B0B"/>
+</g>
+</svg>

@@ -21,6 +21,17 @@ FONTS = {
     "medium": FONT_DIR / "Inter-Medium.otf",
     "regular": FONT_DIR / "Inter-Regular.otf",
 }
+# output folders, numbered so the package reads in order
+DIRS = {
+    "logos": "01-logos",
+    "icons": "02-app-icons-and-favicon",
+    "colors": "03-brand-colors",
+    "typography": "04-typography",
+    "business-card": "05-business-cards",
+    "guidelines": "06-brand-guidelines",
+    "templates": "07-templates",
+    "previews": "08-previews",
+}
 CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 
 # ---------------------------------------------------------------------------

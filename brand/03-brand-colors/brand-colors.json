@@ -1,0 +1,40 @@
+{
+  "primary-black": {
+    "name": "Primary Black",
+    "hex": "#0B0B0B",
+    "rgb": [
+      11,
+      11,
+      11
+    ],
+    "cmyk": [
+      0,
+      0,
+      0,
+      96
+    ],
+    "cmyk_rich_black": [
+      60,
+      40,
+      40,
+      100
+    ]
+  },
+  "premium-gold": {
+    "name": "Premium Gold",
+    "hex": "#D4AF37",
+    "rgb": [
+      212,
+      175,
+      55
+    ],
+    "cmyk": [
+      0,
+      17,
+      74,
+      17
+    ],
+    "pantone_metallic": "871 C",
+    "pantone_solid_closest": "7562 C"
+  }
+}

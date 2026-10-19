@@ -1,0 +1,14 @@
+Smart Analysis brand colours
+
+Primary Black
+  HEX   #0B0B0B
+  RGB   11 11 11
+  CMYK  0 0 0 96
+
+Premium Gold
+  HEX   #D4AF37
+  RGB   212 175 55
+  CMYK  0 17 74 17
+
+Rich black for large print areas: CMYK 60 40 40 100
+Gold Pantone: 871 C (metallic) / 7562 C (closest solid). Approve a printed proof.

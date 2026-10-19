@@ -7,19 +7,19 @@ Inter font family installed (fc-list | grep Inter).  Every asset in brand/ is
 regenerated from the master geometry in core.py.
 """
 import argparse
+import json
 import base64
 import shutil
 from pathlib import Path
 
 from PIL import Image
 
-from core import (BLACK, BRAND, GOLD, TAGLINE, WHITE, Brand, Renderer, svg_doc,
+from core import (BLACK, BRAND, DIRS, GOLD, TAGLINE, WHITE, Brand, Renderer, svg_doc,
                   font_metrics)
 import pages
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = {k: ROOT / k for k in ("logos", "icons", "previews", "guidelines",
-                             "business-card", "templates")}
+OUT = {k: ROOT / v for k, v in DIRS.items()}
 
 KINDS = ["primary", "horizontal", "stacked", "stacked-tagline"]
 SCHEMES = {           # scheme key -> file suffix
@@ -111,6 +111,31 @@ class Builder:
             for hpx, tag in ((48, "@1x"), (96, "@2x")):
                 self.r.svg_png(inline_svg(doc), OUT["templates"] / "website" /
                                f"website-logo-{scheme}{tag}.png", round(hpx * bb[2] / bb[3]), hpx)
+
+    # --------------------------------------------------------------- colours
+    def colors(self):
+        d = OUT["colors"]
+        rows = [("primary-black", "Primary Black", BLACK), ("premium-gold", "Premium Gold", GOLD)]
+        data = {}
+        for key, name, hexc in rows:
+            rgb = tuple(int(hexc[i:i + 2], 16) for i in (1, 3, 5))
+            data[key] = {"name": name, "hex": hexc, "rgb": list(rgb), "cmyk": list(pages.cmyk(hexc))}
+        data["primary-black"]["cmyk_rich_black"] = [60, 40, 40, 100]
+        data["premium-gold"]["pantone_metallic"] = "871 C"
+        data["premium-gold"]["pantone_solid_closest"] = "7562 C"
+        write(d / "brand-colors.json", json.dumps(data, indent=2) + "\n")
+        write(d / "brand-colors.css", ":root {\n  --sa-black: %s;\n  --sa-gold: %s;\n  --sa-white: #FFFFFF;\n}\n"
+              % (BLACK, GOLD))
+        txt = [f"{BRAND} brand colours", ""]
+        for key, name, hexc in rows:
+            c = data[key]
+            txt += [name, f"  HEX   {hexc}", f"  RGB   {' '.join(map(str, c['rgb']))}",
+                    f"  CMYK  {' '.join(map(str, c['cmyk']))}", ""]
+        txt += ["Rich black for large print areas: CMYK 60 40 40 100",
+                "Gold Pantone: 871 C (metallic) / 7562 C (closest solid). Approve a printed proof."]
+        write(d / "brand-colors.txt", "\n".join(txt) + "\n")
+        for key, name, hexc in rows:
+            Image.new("RGB", (600, 600), hexc).save(d / f"swatch-{key}.png")
 
     # ------------------------------------------------------------------ icons
     def app_icon_svg(self, size, container, scheme, radius=0.2237, simple=True, frac=0.62):
@@ -409,14 +434,15 @@ class Builder:
         self.r.svg_png(inline_svg(pages.construction_svg(self)), d / "logo-construction-sheet.png",
                        3200, 2000, bg=WHITE)
         book = pages.Guidelines(self)
-        for name, fn in (("logo-usage-and-spacing-guide", book.p_clearspace),
-                         ("logo-misuse", book.p_misuse),
-                         ("color-palette-sheet", book.p_color),
-                         ("typography-specification-sheet", book.p_type)):
-            self.r.html_png(book.single(fn()), d / f"{name}.png", pages.PW, pages.PH, scale=2)
-            self.r.html_pdf(book.single(fn()), d / f"{name}.pdf", "297mm", "210mm")
+        for folder, name, fn in ((d, "logo-usage-and-spacing-guide", book.p_clearspace),
+                                 (d, "logo-misuse", book.p_misuse),
+                                 (OUT["colors"], "color-palette-sheet", book.p_color),
+                                 (OUT["typography"], "typography-specification-sheet", book.p_type)):
+            folder.mkdir(parents=True, exist_ok=True)
+            self.r.html_png(book.single(fn()), folder / f"{name}.png", pages.PW, pages.PH, scale=2)
+            self.r.html_pdf(book.single(fn()), folder / f"{name}.pdf", "297mm", "210mm")
         self.r.html_pdf(book.document(), d / "smart-analysis-brand-guidelines.pdf", "297mm", "210mm")
-        self.r.html_png(pages.presentation_board(self), ROOT / "smart-analysis-brand-board.png",
+        self.r.html_png(pages.presentation_board(self), OUT["previews"] / "smart-analysis-brand-board.png",
                         3200, 2000)
 
 
@@ -424,11 +450,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--website", help="real company URL to encode in the business-card QR code")
     a = ap.parse_args()
-    for k in ("logos", "icons", "previews", "guidelines", "business-card", "templates"):
-        shutil.rmtree(OUT[k], ignore_errors=True)
+    for d in OUT.values():
+        shutil.rmtree(d, ignore_errors=True)
     with Renderer() as r:
         bld = Builder(r, a.website)
-        for step in ("logos", "icons", "previews", "business_card", "templates", "guidelines"):
+        for step in ("logos", "colors", "icons", "previews", "business_card", "templates",
+                     "guidelines"):
             print("building", step)
             getattr(bld, step)()
     print("done")

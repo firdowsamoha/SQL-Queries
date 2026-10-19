@@ -2,7 +2,7 @@
 
 **Turn Your Data Into Smarter Decisions**
 
-![Brand board](smart-analysis-brand-board.png)
+![Brand board](08-previews/smart-analysis-brand-board.png)
 
 ## The symbol
 
@@ -25,13 +25,14 @@ The over/under weave uses SVG masks, which Illustrator opens as opacity masks an
 
 | Folder | What's inside |
 |---|---|
-| `logos/svg`, `logos/png` | **Primary** (symbol + wordmark + tagline), **horizontal**, **stacked**, **stacked-tagline** and **symbol**, each in six colourways: `light` (black + gold), `dark` (white + gold for dark backgrounds), `gold-s` (gold S + black brain), `mono-black`, `mono-white`, `mono-gold`. The PNGs are high-resolution with transparent backgrounds. |
-| `icons/` | App icon (black, gold, light and full-bleed square), `favicon.svg`, `favicon.ico`, `favicon-transparent.svg`, and PNGs from 16 to 1024 px including `apple-touch-icon-180.png`. |
-| `previews/` | High-resolution previews of the primary logo on light and dark backgrounds, plus all variations on one board. |
-| `guidelines/` | **Brand guidelines PDF** (15 pages), logo construction sheet (SVG/PNG), usage and spacing guide, misuse sheet, colour palette sheet, typography specification sheet (PNG + PDF). |
-| `business-card/` | Front and back sources as SVG (90 × 50 mm plus 3 mm bleed, text is editable), a print-ready 2-page PDF, 600 dpi PNG previews (trimmed and with bleed), a bleed and safe-area guide, and a mockup. |
-| `templates/` | Website logos (`@1x`/`@2x`), social profile icon, LinkedIn logo and cover, social post template (1080²), product announcement template (1200 × 675), HTML email signature, presentation title slide (16:9), A4 letterhead (SVG + PDF). |
-| `smart-analysis-brand-board.png` | Presentation board of the complete identity. |
+| `01-logos/` | `svg/`, `png/` and `jpg/` for the **primary** logo (symbol + wordmark + tagline), **horizontal**, **stacked**, **stacked-tagline** and **symbol**, each in six colourways: `light` (black + gold), `dark` (white + gold for dark backgrounds), `gold-s` (gold S + black brain), `mono-black`, `mono-white`, `mono-gold`. PNGs have transparent backgrounds; JPGs sit on the background each colourway is made for. |
+| `02-app-icons-and-favicon/` | App icon (black, gold, light and full-bleed square), `favicon.svg`, `favicon.ico`, `favicon-transparent.svg`, and PNGs from 16 to 1024 px including `apple-touch-icon-180.png`. |
+| `03-brand-colors/` | Colour palette sheet (PNG + PDF), swatches, and the values as `brand-colors.json`, `brand-colors.css` and `brand-colors.txt` (HEX, RGB, CMYK, Pantone). |
+| `04-typography/` | Typography specification sheet (PNG + PDF). |
+| `05-business-cards/` | Front and back sources as SVG (90 × 50 mm plus 3 mm bleed, text is editable), a print-ready 2-page PDF, 600 dpi PNG previews (trimmed and with bleed), a bleed and safe-area guide, and a mockup. |
+| `06-brand-guidelines/` | **Brand guidelines PDF** (15 pages), logo construction sheet (SVG/PNG), usage and spacing guide, misuse sheet. |
+| `07-templates/` | Website logos (`@1x`/`@2x`), social profile icon, LinkedIn logo and cover, social post template (1080²), product announcement template (1200 × 675), HTML email signature, presentation title slide (16:9), A4 letterhead (SVG + PDF). |
+| `08-previews/` | Brand board, primary logo previews on light and dark, and all variations on one board. |
 | `source/` | `build.py` regenerates every asset from the master geometry in `core.py`. |
 
 ## Placeholders
@@ -44,12 +45,12 @@ To print a real QR code on the business card, rebuild with your website:
 
 ```bash
 pip install playwright fonttools uharfbuzz pillow qrcode
-python3 brand/source/build.py --website https://your-domain.com
+python3 source/build.py --website https://your-domain.com
 ```
 
 The build needs Chromium (Playwright) and the Inter font installed on the system.
 
-For the email signature, host `templates/email-signature/email-signature-logo.png`
+For the email signature, host `07-templates/email-signature/email-signature-logo.png`
 on your website, then replace the `src` placeholder in `email-signature.html` with its URL.
 
 ## Key rules (summary)

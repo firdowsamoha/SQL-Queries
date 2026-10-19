@@ -7,7 +7,7 @@ from pathlib import Path
 
 from core import (BLACK, BRAND, BRAIN_ANGLES, BRAIN_E, BRAIN_RX, BRAIN_RY, BRAIN_W, C1, C2, GAP,
                   GOLD, HUB, HUB_R, NODE_R, NODES, R, T_LOWER, T_UPPER, TAGLINE, TRACE_W, W,
-                  WHITE, brain_points, symbol_raw)
+                  WHITE, DIRS, brain_points, symbol_raw)
 
 ROOT = Path(__file__).resolve().parents[1]
 PW, PH = 1122, 793          # A4 landscape at 96 dpi
@@ -25,7 +25,8 @@ def svg_el(inner, bb, w=None, h=None, style=""):
 
 
 def uri(rel):
-    p = ROOT / rel
+    head, rest = rel.split("/", 1)
+    p = ROOT / DIRS.get(head, head) / rest
     return "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
 
 
@@ -614,15 +615,18 @@ use it as a pre-printed sheet.</p></div></div>""", "Stationery")
         return self.page(f"""
 <div class="eyebrow">14 · Files</div><h1>Asset index.</h1>
 <div class="grid3" style="gap:30px">
-<div><h3>logos/</h3><p>svg/ and png/ for primary, horizontal, stacked, stacked-tagline and symbol in light,
-dark, gold-s, mono-black, mono-white and mono-gold.</p>
-<h3>icons/</h3><p>App icons (3 colourways + full-bleed), favicon.svg, favicon.ico, PNG sizes 16–1024,
-apple-touch-icon.</p></div>
-<div><h3>guidelines/</h3><p>This book, construction sheet, usage and spacing guide, misuse, colour palette and
-typography sheets (PNG + PDF).</p><h3>business-card/</h3><p>Front/back SVG sources, print-ready PDF with bleed,
-600 dpi previews, bleed and safe-area guide, mockup.</p></div>
-<div><h3>templates/</h3><p>Website logos, social profile icon, LinkedIn logo and cover, social post, product
+<div><h3>01-logos/</h3><p>svg/, png/ and jpg/ for primary, horizontal, stacked, stacked-tagline and symbol in
+light, dark, gold-s, mono-black, mono-white and mono-gold.</p>
+<h3>02-app-icons-and-favicon/</h3><p>App icons (3 colourways + full-bleed), favicon.svg, favicon.ico,
+PNG sizes 16–1024, apple-touch-icon.</p>
+<h3>03-brand-colors/</h3><p>Palette sheet, swatches, JSON, CSS and text values.</p></div>
+<div><h3>04-typography/</h3><p>Typography specification sheet (PNG + PDF).</p>
+<h3>05-business-cards/</h3><p>Front/back SVG sources, print-ready PDF with bleed, 600 dpi previews,
+bleed and safe-area guide, mockup.</p>
+<h3>06-brand-guidelines/</h3><p>This book, construction sheet, usage and spacing guide, misuse sheet.</p></div>
+<div><h3>07-templates/</h3><p>Website logos, social profile icon, LinkedIn logo and cover, social post, product
 announcement, email signature, presentation title slide, A4 letterhead.</p>
+<h3>08-previews/</h3><p>Brand board and logo previews.</p>
 <h3>source/</h3><p>build.py regenerates everything from the master geometry. Run with --website URL to
 encode a real QR code on the business card.</p></div></div>
 <div style="position:absolute;right:72px;bottom:80px">{self.lock("horizontal", "light", w=240)}</div>""", "Files")

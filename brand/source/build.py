@@ -93,6 +93,16 @@ class Builder:
                 w = 3000 if kind in ("primary", "horizontal") else 2000
                 self.r.svg_png(inline_svg(doc), OUT["logos"] / "png" / p.with_suffix(".png").name,
                                w, round(w * bb[3] / bb[2]))
+        # JPG copies (no transparency): flattened onto the background each colourway is made for
+        for png in sorted((OUT["logos"] / "png").glob("*.png")):
+            scheme = next(k for k, v in SCHEMES.items() if png.stem.endswith("-" + v))
+            im = Image.open(png).convert("RGBA")
+            pad = round(0.12 * min(im.size))
+            bg = Image.new("RGBA", (im.width + 2 * pad, im.height + 2 * pad), PREVIEW_BG[scheme])
+            bg.alpha_composite(im, (pad, pad))
+            out = OUT["logos"] / "jpg" / png.with_suffix(".jpg").name
+            out.parent.mkdir(parents=True, exist_ok=True)
+            bg.convert("RGB").save(out, quality=95, subsampling=0)
         # website logo (horizontal, no tagline) at fixed display heights
         for scheme in ("light", "dark"):
             inner, bb = self.lock[("horizontal", scheme)]

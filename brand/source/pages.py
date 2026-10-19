@@ -5,9 +5,9 @@ import base64
 import math
 from pathlib import Path
 
-from core import (BLACK, BRAND, BRAIN_ANGLES, BRAIN_E, BRAIN_RX, BRAIN_RY, BRAIN_W, C1, C2,
+from core import (BLACK, BRAND, BRAIN_ANGLES, BRAIN_E, BRAIN_RX, BRAIN_RY, BRAIN_W, C1, C2, GAP,
                   GOLD, HUB, HUB_R, NODE_R, NODES, R, T_LOWER, T_UPPER, TAGLINE, TRACE_W, W,
-                  WHITE, symbol_raw)
+                  WHITE, brain_points, symbol_raw)
 
 ROOT = Path(__file__).resolve().parents[1]
 PW, PH = 1122, 793          # A4 landscape at 96 dpi
@@ -71,7 +71,7 @@ def variations_board(bld):
     for scheme in ("light", "dark"):
         bg = PREVIEW_BG[scheme]
         fg = WHITE if bg == BLACK else BLACK
-        st = svg_el(*bld.lock[("stacked-tagline", scheme)], h=300)
+        st = svg_el(*bld.lock[("stacked-tagline", scheme)], h=250)
         pr = svg_el(*bld.lock[("primary", scheme)], w=520)
         tiles.append(f'<div class="t" style="background:{bg};color:{fg}"><div class="row">{st}{pr}</div>'
                      f'<div class="lab">Stacked and primary lockups</div></div>')
@@ -194,9 +194,7 @@ def construction_svg(bld):
                  f'stroke-width="{hl*2}"/>')
     g.append(f'<ellipse cx="{BRAIN_E[0]}" cy="{BRAIN_E[1]}" rx="{BRAIN_RX}" ry="{BRAIN_RY}" fill="none" '
              f'stroke="#00A3E0" stroke-width="{hl}" {dash}/>')
-    for a in BRAIN_ANGLES:
-        x = BRAIN_E[0] + BRAIN_RX * math.cos(math.radians(a))
-        y = BRAIN_E[1] + BRAIN_RY * math.sin(math.radians(a))
+    for x, y in brain_points():
         g.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="1.3" fill="#00A3E0"/>')
     for c, a in ((C1, T_UPPER), (C2, T_LOWER)):
         e = _p(c, R + W / 2 + 12, a)
@@ -224,24 +222,27 @@ def construction_svg(bld):
     bh = bld.b.bbox[3]
     x_pct = W / bh * 100
     rows = [
-        ("Grid", "8-unit module. The symbol is 143.5 × 200.6 units (ratio 1 : 1.40)."),
+        ("Grid", f"8-unit module. The symbol is {bld.b.bbox[2]:.1f} × {bld.b.bbox[3]:.1f} units "
+                 f"(ratio 1 : {bld.b.bbox[3] / bld.b.bbox[2]:.2f})."),
         ("X", f"S stroke width = 32 units = {x_pct:.1f}% of symbol height. X is the master measure."),
         ("Letter S", f"Two tangent circles C1 / C2, centreline radius {R} (1.31 X), meeting on the spine."),
-        ("Terminals", f"Upper terminal cut at {T_UPPER}° so the stroke flows into the brain; "
+        ("Terminals", f"Upper terminal cut at {T_UPPER}° so the tip ends inside the brain; "
                       f"lower terminal at {T_LOWER}°."),
-        ("AI brain", f"Five lobes (arcs) on a {BRAIN_RX:.0f} × {BRAIN_RY:.0f} ellipse, contour "
-                     f"{BRAIN_W} units (0.34 X). The S overlaps the brain's first lobe."),
+        ("AI brain", f"Six lobes (arcs) on a {BRAIN_RX:.0f} × {BRAIN_RY:.0f} ellipse, contour "
+                     f"{BRAIN_W} units (0.34 X)."),
+        ("Interlock", f"The front lobe arches over the S head, the S tip runs under the brain, the last "
+                      f"lobe tucks under the spine. Gap at every crossing: {GAP} units."),
         ("Circuit", f"Traces {TRACE_W} units (0.2 X) radiate from a hub Ø{2*HUB_R:.0f} at C1 to three "
                     f"nodes Ø{2*NODE_R:.0f}: one forward, two at 45°."),
         ("Colour", "S #0B0B0B · brain, traces and nodes #D4AF37. Solid fills only."),
     ]
-    ty0 = 250
+    ty0 = 240
     txt = [f'<text x="900" y="120" {F} font-size="22" font-weight="600" letter-spacing="3" '
            f'fill="{GOLD}">LOGO CONSTRUCTION</text>',
            f'<text x="900" y="180" {F} font-size="46" font-weight="700" fill="{BLACK}" '
            f'letter-spacing="-1">S + AI Brain symbol</text>']
     for i, (h, body) in enumerate(rows):
-        y = ty0 + i * 92
+        y = ty0 + i * 82
         txt.append(f'<text x="900" y="{y}" {F} font-size="20" font-weight="700" fill="{BLACK}">{h}</text>')
         words, line, lines = body.split(), "", []
         for w_ in words:
@@ -343,9 +344,9 @@ Palette — Primary Black #0B0B0B and Premium Gold #D4AF37<br>Typeface — Inter
 <div class="tile" style="height:500px">{self.sym("light", h=380)}</div>
 <div><p>The mark combines exactly two elements: the letter <b style="color:#0B0B0B">S</b> and an
 <b style="color:#0B0B0B">AI brain</b>.</p>
-<p>The upper terminal of the S does not stop — it flows straight into the brain's contour, so the
-brain grows out of the letter rather than sitting beside it. The S's upper bowl becomes the brain's
-interior.</p>
+<p>The S and the brain are woven into one form. The brain's front lobe arches over the head of the S,
+the S's tip cuts under the brain's edge into its interior, and the brain's last lobe tucks back under the
+S at the spine. Neither element can be lifted out without the other — the S's upper bowl is the brain.</p>
 <p>From the centre of that bowl a hub sends three circuit traces to three nodes: data entering the
 brand (the S) and leaving as structured reasoning (the brain).</p>
 <h3 style="margin-top:20px">What it communicates</h3>

@@ -27,30 +27,37 @@ CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 # Master symbol geometry (symbol units, before normalisation)
 #
 #   The S is two tangent circles (C1 upper, C2 lower) of radius R, stroked at
-#   width W.  Its upper terminal is cut at -58deg so the stroke flows straight
-#   into the AI-brain contour: a scalloped ellipse whose lobes wrap the open
-#   right side of the upper bowl.  Circuit traces radiate from a node at the
-#   centre of the upper bowl to three terminal nodes inside the brain.
+#   width W, with its upper terminal cut at -45deg.  The AI brain is a
+#   scalloped ellipse contour wrapped around the S's upper bowl, and the two
+#   are woven together: the brain's front lobe rises from inside the bowl and
+#   arches OVER the head of the S,
+#   the S's tip then runs UNDER the brain into its interior, and the brain's
+#   last lobe tucks back UNDER the S at the spine.  A knockout gap (GAP)
+#   separates every crossing.  Circuit traces radiate from a hub at the
+#   centre of the upper bowl to three nodes inside the brain.
 # ---------------------------------------------------------------------------
 W = 32                     # S stroke width  ("X" in the guidelines)
 R = 42                     # bowl centreline radius
 C1 = (100.0, 82.0)
 C2 = (100.0, 82.0 + 2 * R)
-T_UPPER = -58              # upper terminal angle
+T_UPPER = -45              # upper terminal angle (tip sits inside the brain)
 T_LOWER = 142              # lower terminal angle
-BRAIN_E = (124.0, 80.0)    # brain ellipse centre
-BRAIN_RX, BRAIN_RY = 52.0, 46.0
-BRAIN_ANGLES = [-110, -80, -42, -5, 32, 68]
+BRAIN_E = (128.0, 74.0)    # brain ellipse centre
+BRAIN_RX, BRAIN_RY = 56.0, 54.0
+BRAIN_START = (80.0, 58.0) # front lobe rises from inside the upper bowl
+BRAIN_ANGLES = [-100, -62, -24, 14, 52, 86]
+BRAIN_OVER = 1             # number of front lobes drawn over the S
 BRAIN_BULGE = 0.62
 BRAIN_W = 11               # brain contour stroke
+GAP = 5                    # knockout gap at every crossing
 TRACE_W = 6.5              # circuit trace stroke
 HUB = (100.0, 82.0)
 NODES = [(142.0, 64.0), (142.0, 100.0), (152.0, 82.0)]
 HUB_R, NODE_R = 8.5, 6.5
 
 # simplified geometry for app icon / favicon (heavier strokes, fewer parts)
-SIMPLE = dict(W=36, brain_w=15, brain_angles=[-110, -70, -25, 20, 66], trace_w=9,
-              nodes=[(150.0, 82.0)], hub_r=10, node_r=9)
+SIMPLE = dict(W=36, brain_w=15, brain_angles=[-96, -48, 0, 46, 86], over=1, gap=6,
+              trace_w=9, nodes=[(152.0, 82.0)], hub_r=10, node_r=9)
 
 
 def _pt(c, r, a):
@@ -62,14 +69,23 @@ def _f(p):
     return f"{p[0]:.2f} {p[1]:.2f}"
 
 
-def s_path(w=W):
+def s_path():
     a, b, c = _pt(C1, R, T_UPPER), _pt(C1, R, 90), _pt(C2, R, T_LOWER)
     return f"M{_f(a)} A{R} {R} 0 1 0 {_f(b)} A{R} {R} 0 1 1 {_f(c)}"
 
 
-def brain_path(angles=BRAIN_ANGLES):
-    pts = [(BRAIN_E[0] + BRAIN_RX * math.cos(math.radians(a)),
-            BRAIN_E[1] + BRAIN_RY * math.sin(math.radians(a))) for a in angles]
+def s_lower_path():
+    """Lower bowl only: the one stretch of the S the brain passes under."""
+    b, c = _pt(C1, R, 90), _pt(C2, R, T_LOWER)
+    return f"M{_f(b)} A{R} {R} 0 1 1 {_f(c)}"
+
+
+def brain_points(angles=BRAIN_ANGLES):
+    return [BRAIN_START] + [(BRAIN_E[0] + BRAIN_RX * math.cos(math.radians(a)),
+                             BRAIN_E[1] + BRAIN_RY * math.sin(math.radians(a))) for a in angles]
+
+
+def brain_path(pts):
     d = f"M{_f(pts[0])}"
     for p, q in zip(pts, pts[1:]):
         r = math.dist(p, q) * BRAIN_BULGE
@@ -78,24 +94,39 @@ def brain_path(angles=BRAIN_ANGLES):
 
 
 def symbol_raw(s_color, brain_color, simple=False):
-    """Symbol elements in raw geometry space (brain drawn first so the S
-    terminal overlaps it and the brain appears to grow out of the letter)."""
+    """Symbol elements in raw geometry space.  The over/under weave is built
+    with two luminance masks (userSpaceOnUse), which Illustrator imports as
+    opacity masks and Figma as masks; all shapes stay true vectors."""
     if simple:
         g = SIMPLE
-        x = g["nodes"][0]
-        traces = f"M{_f(HUB)} H{x[0]:.2f}"
+        traces = f"M{_f(HUB)} H{g['nodes'][0][0]:.2f}"
         nodes, hub_r, node_r = g["nodes"], g["hub_r"], g["node_r"]
-        w, bw, tw, angles = g["W"], g["brain_w"], g["trace_w"], g["brain_angles"]
+        w, bw, tw, angles, over, gap = (g["W"], g["brain_w"], g["trace_w"], g["brain_angles"],
+                                        g["over"], g["gap"])
     else:
         j = 124.0
         traces = (f"M{_f(HUB)} H{j} L140 66 M{j} {HUB[1]} L140 98 "
                   f"M{j} {HUB[1]} H150")
         nodes, hub_r, node_r = NODES, HUB_R, NODE_R
-        w, bw, tw, angles = W, BRAIN_W, TRACE_W, BRAIN_ANGLES
+        w, bw, tw, angles, over, gap = W, BRAIN_W, TRACE_W, BRAIN_ANGLES, BRAIN_OVER, GAP
+    pts = brain_points(angles)
+    front = brain_path(pts[:over + 1])           # lobe arching over the head of the S
+    back = brain_path(pts[over:])                # lobes behind, tucking under the spine
+    s = s_path()
+    k = "sa-s" if simple else "sa"
+    box = 'maskUnits="userSpaceOnUse" x="-60" y="-60" width="400" height="400"'
+    full = '<rect x="-60" y="-60" width="400" height="400" fill="#fff"/>'
     out = [
-        f'<path id="brain-contour" d="{brain_path(angles)}" fill="none" stroke="{brain_color}" '
-        f'stroke-width="{bw}" stroke-linecap="round" stroke-linejoin="round"/>',
-        f'<path id="letter-s" d="{s_path()}" fill="none" stroke="{s_color}" stroke-width="{w}"/>',
+        f'<defs><mask id="{k}-under-s" {box}>{full}<path d="{s_lower_path()}" fill="none" stroke="#000" '
+        f'stroke-width="{w + 2 * gap}"/></mask>'
+        f'<mask id="{k}-under-brain" {box}>{full}<path d="{front}" fill="none" stroke="#000" '
+        f'stroke-width="{bw + 2 * gap}" stroke-linecap="round"/></mask></defs>',
+        f'<path id="brain-back" d="{back}" fill="none" stroke="{brain_color}" stroke-width="{bw}" '
+        f'stroke-linecap="round" stroke-linejoin="round" mask="url(#{k}-under-s)"/>',
+        f'<path id="letter-s" d="{s}" fill="none" stroke="{s_color}" stroke-width="{w}" '
+        f'mask="url(#{k}-under-brain)"/>',
+        f'<path id="brain-front" d="{front}" fill="none" stroke="{brain_color}" stroke-width="{bw}" '
+        f'stroke-linecap="round" stroke-linejoin="round"/>',
         f'<path id="circuit-traces" d="{traces}" fill="none" stroke="{brain_color}" '
         f'stroke-width="{tw}" stroke-linecap="round" stroke-linejoin="round"/>',
         f'<circle cx="{HUB[0]}" cy="{HUB[1]}" r="{hub_r}" fill="{brain_color}"/>',

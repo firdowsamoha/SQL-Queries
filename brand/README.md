@@ -6,11 +6,12 @@
 
 ## The symbol
 
-The mark uses two elements and nothing else: the letter **S** and an **AI brain**.
-The S's upper terminal doesn't end. It runs straight into the gold brain contour,
-so the brain grows out of the letter, and the S's upper bowl becomes the inside of
-the brain. A hub at the centre of that bowl sends three circuit traces to three
-nodes, showing data turning into reasoning.
+The mark uses two elements and nothing else: the letter **S** and an **AI brain**,
+woven together into one form. The brain's front lobe arches over the head of the S,
+the S's tip cuts under the brain's edge into its interior, and the brain's last lobe
+tucks back under the S at the spine, with a small gap at every crossing. The S's upper
+bowl is the inside of the brain. A hub at the centre of that bowl sends three circuit
+traces to three nodes, showing data turning into reasoning.
 
 - **Primary Black** `#0B0B0B`: the S, type and backgrounds
 - **Premium Gold** `#D4AF37`: the brain, circuit, the word *Analysis* and accents
@@ -18,6 +19,7 @@ nodes, showing data turning into reasoning.
 
 All master artwork uses solid vector fills. The logo files contain no gradients,
 effects, embedded raster images or live fonts (the wordmark is converted to outlines).
+The over/under weave uses SVG masks, which Illustrator opens as opacity masks and Figma as masks.
 
 ## Contents
 

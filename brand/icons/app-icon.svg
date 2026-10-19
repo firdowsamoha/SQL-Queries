@@ -2,11 +2,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
 <title>Smart Analysis app icon</title>
 <rect width="1024" height="1024" rx="229.07" fill="#0B0B0B"/>
-<g class="symbol" transform="translate(282.695 194.560) scale(3.08569) translate(-39.875 -20.250)">
-<path id="brain-contour" d="M106.21 36.77 A22.05 22.05 0 0 1 141.79 36.77 A23.42 23.42 0 0 1 171.13 60.56 A21.83 21.83 0 0 1 172.86 95.73 A23.68 23.68 0 0 1 145.15 122.02" fill="none" stroke="#D4AF37" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="letter-s" d="M122.26 46.38 A42 42 0 1 0 100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#FFFFFF" stroke-width="36"/>
-<path id="circuit-traces" d="M100.00 82.00 H150.00" fill="none" stroke="#D4AF37" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="symbol" transform="translate(286.890 194.560) scale(2.90231) translate(-40.000 -7.250)">
+<defs><mask id="sa-s-under-s" maskUnits="userSpaceOnUse" x="-60" y="-60" width="400" height="400"><rect x="-60" y="-60" width="400" height="400" fill="#fff"/><path d="M100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#000" stroke-width="48"/></mask><mask id="sa-s-under-brain" maskUnits="userSpaceOnUse" x="-60" y="-60" width="400" height="400"><rect x="-60" y="-60" width="400" height="400" fill="#fff"/><path d="M80.00 58.00 A35.06 35.06 0 0 1 122.15 20.30" fill="none" stroke="#000" stroke-width="27" stroke-linecap="round"/></mask></defs>
+<path id="brain-back" d="M122.15 20.30 A28.15 28.15 0 0 1 165.47 33.87 A27.40 27.40 0 0 1 184.00 74.00 A26.31 26.31 0 0 1 166.90 112.84 A23.61 23.61 0 0 1 131.91 127.87" fill="none" stroke="#D4AF37" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" mask="url(#sa-s-under-s)"/>
+<path id="letter-s" d="M129.70 52.30 A42 42 0 1 0 100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#FFFFFF" stroke-width="36" mask="url(#sa-s-under-brain)"/>
+<path id="brain-front" d="M80.00 58.00 A35.06 35.06 0 0 1 122.15 20.30" fill="none" stroke="#D4AF37" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="circuit-traces" d="M100.00 82.00 H152.00" fill="none" stroke="#D4AF37" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="100.0" cy="82.0" r="10" fill="#D4AF37"/>
-<circle cx="150.0" cy="82.0" r="9" fill="#D4AF37"/>
+<circle cx="152.0" cy="82.0" r="9" fill="#D4AF37"/>
 </g>
 </svg>

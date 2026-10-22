@@ -287,8 +287,10 @@ class Builder:
         for name, size, scheme, fill in (
                 ("social-profile-icon", 1080, "dark", BLACK),
                 ("social-profile-icon-light", 1080, "light", WHITE),
+                ("social-profile-icon-gold-s", 1080, "gold-s", WHITE),
                 ("linkedin-company-logo", 400, "dark", BLACK),
-                ("linkedin-company-logo-light", 400, "light", WHITE)):
+                ("linkedin-company-logo-light", 400, "light", WHITE),
+                ("linkedin-company-logo-gold-s", 400, "gold-s", WHITE)):
             sym, sbb = self.sym[scheme]
             g, w, h = place(sym, sbb, 0, 0, h=size * 0.56)
             g, _, _ = place(sym, sbb, (size - w) / 2, (size - h) / 2, h=size * 0.56)

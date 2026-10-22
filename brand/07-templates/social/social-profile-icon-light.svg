@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080"><title>Smart Analysis social-profile-icon-light</title><rect width="1080" height="1080" fill="#FFFFFF"/><g transform="translate(324.827 237.600) scale(6.04800) translate(0.000 0.000)"><g class="symbol" transform="translate(0.000 0.000) scale(0.46431) translate(-42.000 -8.625)">
+<defs><mask id="sa-under-s" maskUnits="userSpaceOnUse" x="-60" y="-60" width="400" height="400"><rect x="-60" y="-60" width="400" height="400" fill="#fff"/><path d="M100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#000" stroke-width="42"/></mask><mask id="sa-under-brain" maskUnits="userSpaceOnUse" x="-60" y="-60" width="400" height="400"><rect x="-60" y="-60" width="400" height="400" fill="#fff"/><path d="M80.00 58.00 A33.08 33.08 0 0 1 118.28 20.82" fill="none" stroke="#000" stroke-width="21" stroke-linecap="round"/></mask></defs>
+<path id="brain-back" d="M118.28 20.82 A22.59 22.59 0 0 1 154.29 26.32 A22.18 22.18 0 0 1 179.16 52.04 A21.81 21.81 0 0 1 182.34 87.06 A22.04 22.04 0 0 1 162.48 116.55 A20.21 20.21 0 0 1 131.91 127.87" fill="none" stroke="#D4AF37" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" mask="url(#sa-under-s)"/>
+<path id="letter-s" d="M129.70 52.30 A42 42 0 1 0 100.00 124.00 A42 42 0 1 1 66.90 191.86" fill="none" stroke="#0B0B0B" stroke-width="32" mask="url(#sa-under-brain)"/>
+<path id="brain-front" d="M80.00 58.00 A33.08 33.08 0 0 1 118.28 20.82" fill="none" stroke="#D4AF37" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="circuit-traces" d="M100.00 82.00 H124.0 L140 66 M124.0 82.0 L140 98 M124.0 82.0 H150" fill="none" stroke="#D4AF37" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="100.0" cy="82.0" r="8.5" fill="#D4AF37"/>
+<circle cx="142.0" cy="64.0" r="6.5" fill="#D4AF37"/>
+<circle cx="142.0" cy="100.0" r="6.5" fill="#D4AF37"/>
+<circle cx="152.0" cy="82.0" r="6.5" fill="#D4AF37"/>
+</g></g></svg>

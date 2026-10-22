@@ -284,13 +284,17 @@ class Builder:
         b = self.b
 
         # social / profile icons
-        for name, size in (("social-profile-icon", 1080), ("linkedin-company-logo", 400)):
-            sym, sbb = self.sym["dark"]
+        for name, size, scheme, fill in (
+                ("social-profile-icon", 1080, "dark", BLACK),
+                ("social-profile-icon-light", 1080, "light", WHITE),
+                ("linkedin-company-logo", 400, "dark", BLACK),
+                ("linkedin-company-logo-light", 400, "light", WHITE)):
+            sym, sbb = self.sym[scheme]
             g, w, h = place(sym, sbb, 0, 0, h=size * 0.56)
             g, _, _ = place(sym, sbb, (size - w) / 2, (size - h) / 2, h=size * 0.56)
             doc = (f'<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" '
                    f'viewBox="0 0 {size} {size}"><title>{BRAND} {name}</title>'
-                   f'<rect width="{size}" height="{size}" fill="{BLACK}"/>{g}</svg>\n')
+                   f'<rect width="{size}" height="{size}" fill="{fill}"/>{g}</svg>\n')
             write(d / "social" / f"{name}.svg", doc)
             self.r.svg_png(inline_svg(doc), d / "social" / f"{name}.png", size, size)
 
